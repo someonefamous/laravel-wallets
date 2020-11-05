@@ -5,6 +5,7 @@ namespace SomeoneFamous\Wallets\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use SomeoneFamous\FindBy\FindBy;
 use SomeoneFamous\Wallets\Collections\TransactionCollection;
+use SomeoneFamous\Wallets\Database\Factories\TransactionFactory;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -19,7 +20,7 @@ class Transaction extends Model
 
     protected static function newFactory()
     {
-        return \SomeoneFamous\Wallets\Database\Factories\TransactionFactory::new();
+        return TransactionFactory::new();
     }
 
     public function getDisplayAmountAttribute(): string

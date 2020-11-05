@@ -4,6 +4,7 @@ namespace SomeoneFamous\Wallets\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use SomeoneFamous\FindBy\FindBy;
+use SomeoneFamous\Wallets\Database\Factories\CurrencyFactory;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -26,7 +27,7 @@ class Currency extends Model
 
     protected static function newFactory()
     {
-        return \SomeoneFamous\Wallets\Database\Factories\CurrencyFactory::new();
+        return CurrencyFactory::new();
     }
 
     public function wallets()

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use SomeoneFamous\FindBy\FindBy;
+use SomeoneFamous\Wallets\Database\Factories\WalletFactory;
 use SomeoneFamous\Wallets\Traits\HasWallets;
 
 class Wallet extends Model
@@ -32,7 +33,7 @@ class Wallet extends Model
 
     protected static function newFactory()
     {
-        return \SomeoneFamous\Wallets\Database\Factories\WalletFactory::new();
+        return WalletFactory::new();
     }
 
     public function transactions()
