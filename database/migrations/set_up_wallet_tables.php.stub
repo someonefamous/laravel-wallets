@@ -1,0 +1,74 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+use SomeoneFamous\Wallets\Models\Currency;
+use SomeoneFamous\Wallets\Models\Transaction;
+use SomeoneFamous\Wallets\Models\Wallet;
+
+class SetUpWalletTables extends Migration
+{
+    public function up()
+    {
+        Schema::create('currencies', function (Blueprint $table) {
+            $table->id();
+            $table->string('code', 3)->unique()->nullable();   // e.g. USD
+            $table->string('symbol', 1)->nullable();           // e.g. $
+            $table->string('name');                            // e.g. United States Dollar
+            $table->unsignedTinyInteger('decimals')->default(2);
+        });
+
+        $currencies = [
+            ['name' => 'Rewards Points', 'symbol' => '☆', 'decimals' => 0],
+            ['name' => 'US Dollar',  'symbol' => '$', 'code' => 'USD'],
+        ];
+
+        if (!App::runningUnitTests()) {
+            foreach ($currencies as $currency) {
+                Currency::create($currency);
+            }
+        }
+
+        Schema::create('wallets', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('owner_id')->nullable();
+            $table->string('owner_type')->nullable();
+            $table->unsignedBigInteger('currency_id');
+            $table->decimal(
+                'overdraft',
+                Currency::MAX_DIGITS_LEFT_OF_DECIMAL + Currency::MAX_DECIMALS,
+                Currency::MAX_DECIMALS
+            )->default(0)->nullable();
+            $table->string('name', Wallet::NAME_MAX_LENGTH)->nullable();
+            $table->timestamps();
+
+            $table->foreign('currency_id')->references('id')->on('currencies');
+
+        });
+
+        if (!App::runningUnitTests()) {
+            foreach (Currency::all() as $currency) {
+                Wallet::create(['currency_id' => $currency->id]);
+            }
+        }
+
+        Schema::create('transactions', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('wallet_id');
+            $table->unsignedBigInteger('counter_wallet_id');
+            $table->decimal(
+                'amount',
+                Currency::MAX_DIGITS_LEFT_OF_DECIMAL + Currency::MAX_DECIMALS,
+                Currency::MAX_DECIMALS
+            );
+            $table->string('description', Transaction::DESCRIPTION_MAX_LENGTH)->nullable();
+            $table->unsignedTinyInteger('status')->default(Transaction::STATUS_PENDING);
+            $table->timestamps();
+
+            $table->foreign('wallet_id')->references('id')->on('wallets');
+            $table->foreign('counter_wallet_id')->references('id')->on('wallets');
+        });
+    }
+}

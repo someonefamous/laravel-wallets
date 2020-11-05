@@ -1,0 +1,43 @@
+{
+  "name": "someonefamous/laravel-wallets",
+  "description": "Multi-currency wallets for Laravel apps.",
+  "keywords": ["laravel", "wallet", "transaction", "money", "currency", "dollar"],
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Someone Famous",
+      "email": "someonefamous@password99.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.4",
+    "someonefamous/laravel-findby": "^1.0"
+  },
+  "require-dev": {
+    "orchestra/testbench": "^6.0",
+    "phpunit/phpunit": "^9.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "SomeoneFamous\\Wallets\\": "src",
+      "SomeoneFamous\\Wallets\\Database\\Factories\\": "database/factories"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "SomeoneFamous\\Wallets\\Tests\\": "tests"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "SomeoneFamous\\Wallets\\WalletServiceProvider"
+      ]
+    }
+  },
+  "scripts": {
+    "test": "vendor/bin/phpunit",
+    "test-f": "vendor/bin/phpunit --filter"
+  }
+}
