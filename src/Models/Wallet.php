@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use SomeoneFamous\FindBy\FindBy;
+use SomeoneFamous\Wallets\Traits\HasWallets;
 
 class Wallet extends Model
 {
@@ -100,8 +101,15 @@ class Wallet extends Model
         return end($this->errors);
     }
 
-    public function spendToUser(User $recipient, $amount, $description = null): bool
+    public function spendTo($recipient, $amount, $description = null): bool
     {
+        if (!in_array(HasWallets::class, class_uses_recursive($recipient))) {
+
+            $this->errors[] = 'Invalid recipient type: Recipient type cannot have wallets.';
+
+            return false;
+        }
+
         $amount = abs($amount);
 
         DB::beginTransaction();
@@ -111,7 +119,8 @@ class Wallet extends Model
 
                 $receivingWallet = new Wallet();
                 $receivingWallet->currency()->associate($this->currency);
-                $receivingWallet->user_id = $recipient->id;
+                $receivingWallet->owner_id = $recipient->id;
+                $receivingWallet->owner_type = get_class($recipient);
                 $receivingWallet->save();
             }
 
