@@ -20,7 +20,8 @@ class Wallet extends Model
         'currency_id',
         'overdraft',
         'name',
-        'user_id',
+        'owner_id',
+        'owner_type',
     ];
 
     protected $appends = [
@@ -88,7 +89,7 @@ class Wallet extends Model
 
     public function getIsSystemWalletAttribute(): bool
     {
-        return $this->user_id === null;
+        return $this->owner_id === null;
     }
 
     public function getErrors(): array

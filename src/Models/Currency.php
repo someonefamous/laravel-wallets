@@ -36,7 +36,7 @@ class Currency extends Model
 
     public function getSystemWalletAttribute()
     {
-        return ($systemWallet = $this->wallets()->whereNull('user_id')->first())
+        return ($systemWallet = $this->wallets()->whereNull('owner_id')->first())
             ? $systemWallet
             : Wallet::create([
                 'currency_id' => $this->id
