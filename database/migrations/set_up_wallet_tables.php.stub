@@ -35,7 +35,7 @@ class SetUpWalletTables extends Migration
             $table->id();
             $table->unsignedBigInteger('owner_id')->nullable();
             $table->string('owner_type')->nullable();
-            $table->unsignedBigInteger('currency_id');
+            $table->foreignId('currency_id')->constrained();
             $table->decimal(
                 'overdraft',
                 Currency::MAX_DIGITS_LEFT_OF_DECIMAL + Currency::MAX_DECIMALS,
@@ -43,9 +43,6 @@ class SetUpWalletTables extends Migration
             )->default(0)->nullable();
             $table->string('name', Wallet::NAME_MAX_LENGTH)->nullable();
             $table->timestamps();
-
-            $table->foreign('currency_id')->references('id')->on('currencies');
-
         });
 
         if (!App::runningUnitTests()) {
@@ -56,8 +53,8 @@ class SetUpWalletTables extends Migration
 
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('wallet_id');
-            $table->unsignedBigInteger('counter_wallet_id');
+            $table->foreignId('wallet_id')->constrained();
+            $table->foreignId('counter_wallet_id')->constrained('wallets');
             $table->decimal(
                 'amount',
                 Currency::MAX_DIGITS_LEFT_OF_DECIMAL + Currency::MAX_DECIMALS,
@@ -66,9 +63,6 @@ class SetUpWalletTables extends Migration
             $table->string('description', Transaction::DESCRIPTION_MAX_LENGTH)->nullable();
             $table->unsignedTinyInteger('status')->default(Transaction::STATUS_PENDING);
             $table->timestamps();
-
-            $table->foreign('wallet_id')->references('id')->on('wallets');
-            $table->foreign('counter_wallet_id')->references('id')->on('wallets');
         });
     }
 }
