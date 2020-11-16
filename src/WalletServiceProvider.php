@@ -18,7 +18,7 @@ class WalletServiceProvider extends ServiceProvider
             if (!class_exists('SetUpWalletTables')) {
                 $this->publishes([
                     __DIR__ . '/../database/migrations/set_up_wallet_tables.php.stub' => database_path(
-                        'migrations/' . date('Y_m_d_His', time()) . '_set_up_wallet_tables.php'
+                        'migrations/' . date('Y_m_d_His') . '_set_up_wallet_tables.php'
                     ),
                 ], 'migrations');
             }
