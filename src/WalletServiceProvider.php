@@ -9,7 +9,7 @@ class WalletServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'sf_wallets');
+        $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'sf_wallets');
     }
 
     public function boot()
@@ -24,15 +24,15 @@ class WalletServiceProvider extends ServiceProvider
             }
 
             $this->publishes([
-                __DIR__.'/../config/config.php' => config_path('sf_wallets.php'),
+                __DIR__ . '/../config/config.php' => config_path('sf_wallets.php'),
             ], 'config');
 
             $this->publishes([
-                __DIR__.'/../resources/views' => resource_path('views/vendor/sf_wallets'),
+                __DIR__ . '/../resources/views' => resource_path('views/vendor/sf_wallets'),
             ], 'views');
         }
 
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'sf_wallets');
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'sf_wallets');
 
         $this->registerRoutes();
     }

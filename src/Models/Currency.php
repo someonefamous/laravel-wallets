@@ -3,18 +3,17 @@
 namespace SomeoneFamous\Wallets\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use SomeoneFamous\FindBy\FindBy;
 use SomeoneFamous\Wallets\Database\Factories\CurrencyFactory;
-
-use Illuminate\Database\Eloquent\Model;
 
 class Currency extends Model
 {
     use FindBy;
     use HasFactory;
 
-    const MAX_DIGITS_LEFT_OF_DECIMAL = 12;
     const MAX_DECIMALS = 8;
+    const MAX_DIGITS_LEFT_OF_DECIMAL = 12;
 
     protected $fillable = [
         'code',
@@ -39,9 +38,7 @@ class Currency extends Model
     {
         return ($systemWallet = $this->wallets()->whereNull('owner_id')->first())
             ? $systemWallet
-            : Wallet::create([
-                'currency_id' => $this->id
-            ]);
+            : Wallet::create(['currency_id' => $this->id]);
     }
 
     public function displayAmount($amount): string
@@ -75,10 +72,11 @@ class Currency extends Model
         $options = [];
 
         foreach (self::orderBy('name')->get() as $currency) {
+
             $options[] = [
-                'id' => $currency->id,
-                'name' => $currency->display_name,
-                'symbol' => $currency->symbol,
+                'id'       => $currency->id,
+                'name'     => $currency->display_name,
+                'symbol'   => $currency->symbol,
                 'decimals' => $currency->decimals
             ];
         }

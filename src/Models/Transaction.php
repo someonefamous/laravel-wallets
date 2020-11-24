@@ -3,39 +3,28 @@
 namespace SomeoneFamous\Wallets\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use SomeoneFamous\FindBy\FindBy;
 use SomeoneFamous\Wallets\Collections\TransactionCollection;
 use SomeoneFamous\Wallets\Database\Factories\TransactionFactory;
-
-use Illuminate\Database\Eloquent\Model;
 
 class Transaction extends Model
 {
     use FindBy;
     use HasFactory;
 
+    const DESCRIPTION_MAX_LENGTH = 255;
     const STATUS_PENDING = 0;
     const STATUS_CLEARED = 1;
-    const DESCRIPTION_MAX_LENGTH = 255;
-
-    protected static function newFactory()
-    {
-        return TransactionFactory::new();
-    }
-
-    public function getDisplayAmountAttribute(): string
-    {
-        return $this->wallet->currency->symbol . number_format($this->amount, $this->wallet->currency->decimals);
-    }
-
-    public function getDisplayBalanceAttribute(): string
-    {
-        return $this->wallet->currency->symbol . number_format($this->balance, $this->wallet->currency->decimals);
-    }
 
     public function newCollection(array $models = [])
     {
         return new TransactionCollection($models);
+    }
+
+    protected static function newFactory()
+    {
+        return TransactionFactory::new();
     }
 
     public function wallet()
@@ -46,6 +35,16 @@ class Transaction extends Model
     public function counterWallet()
     {
         return $this->belongsTo(Wallet::class, 'counter_wallet_id');
+    }
+
+    public function getDisplayAmountAttribute(): string
+    {
+        return $this->wallet->currency->symbol . number_format($this->amount, $this->wallet->currency->decimals);
+    }
+
+    public function getDisplayBalanceAttribute(): string
+    {
+        return $this->wallet->currency->symbol . number_format($this->balance, $this->wallet->currency->decimals);
     }
 
     public function scopeCleared($query)
@@ -79,12 +78,5 @@ class Transaction extends Model
     {
         $this->status = self::STATUS_CLEARED;
         $this->save();
-    }
-
-    public static function resourceOptions(): array
-    {
-        return [
-            'priority' => 'high'
-        ];
     }
 }

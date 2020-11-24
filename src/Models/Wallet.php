@@ -5,7 +5,6 @@ namespace SomeoneFamous\Wallets\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use SomeoneFamous\FindBy\FindBy;
 use SomeoneFamous\Wallets\Database\Factories\WalletFactory;
 use SomeoneFamous\Wallets\Traits\HasWallets;
@@ -98,7 +97,7 @@ class Wallet extends Model
         return $this->errors;
     }
 
-    public function getLastError()
+    public function getLastError(): string
     {
         return end($this->errors);
     }
@@ -148,7 +147,7 @@ class Wallet extends Model
     public function spendToWallet(
         self $receivingWallet,
         $amount,
-        $description,
+        ?string $description,
         $status = Transaction::STATUS_CLEARED
     ): bool
     {
@@ -202,23 +201,13 @@ class Wallet extends Model
             $receivingWallet->transactions()->save($credit);
 
             $success = $this->is_system_wallet || ($this->available_balance + $this->overdraft >= 0);
+
         } catch (\Exception $exception) {
             $success = false;
         }
 
         $success ? DB::commit() : DB::rollback();
 
-        if ($success) {
-            Log::channel('activity')->info('[SUCCESS] money sent successfully');
-        }
-
         return $success;
-    }
-
-    public static function resourceOptions(): array
-    {
-        return [
-            'priority' => 'high'
-        ];
     }
 }
