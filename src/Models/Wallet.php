@@ -102,7 +102,7 @@ class Wallet extends Model
         return end($this->errors);
     }
 
-    public function spendTo($recipient, $amount, $description = null): bool
+    public function spendTo($recipient, $amount, ?string $description = null): bool
     {
         if (!in_array(HasWallets::class, class_uses_recursive($recipient))) {
 
@@ -118,7 +118,7 @@ class Wallet extends Model
         try {
             if (!$receivingWallet = $recipient->wallets()->whereCurrencyId($this->currency_id)->first()) {
 
-                $receivingWallet = new Wallet();
+                $receivingWallet = new self;
                 $receivingWallet->currency()->associate($this->currency);
                 $receivingWallet->owner_id = $recipient->id;
                 $receivingWallet->owner_type = get_class($recipient);
