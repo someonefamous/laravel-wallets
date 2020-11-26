@@ -4,6 +4,8 @@ namespace SomeoneFamous\Wallets\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Builder;
 use SomeoneFamous\FindBy\FindBy;
 use SomeoneFamous\Wallets\Collections\TransactionCollection;
 use SomeoneFamous\Wallets\Database\Factories\TransactionFactory;
@@ -17,22 +19,22 @@ class Transaction extends Model
     const STATUS_PENDING = 0;
     const STATUS_CLEARED = 1;
 
-    public function newCollection(array $models = [])
+    public function newCollection(array $models = []): TransactionCollection
     {
         return new TransactionCollection($models);
     }
 
-    protected static function newFactory()
+    protected static function newFactory(): TransactionFactory
     {
         return TransactionFactory::new();
     }
 
-    public function wallet()
+    public function wallet(): BelongsTo
     {
         return $this->belongsTo(Wallet::class);
     }
 
-    public function counterWallet()
+    public function counterWallet(): BelongsTo
     {
         return $this->belongsTo(Wallet::class, 'counter_wallet_id');
     }
@@ -47,36 +49,38 @@ class Transaction extends Model
         return $this->wallet->currency->symbol . number_format($this->balance, $this->wallet->currency->decimals);
     }
 
-    public function scopeCleared($query)
+    public function scopeCleared(Builder $query): Builder
     {
-        return $query->whereStatus(self::STATUS_CLEARED);
+        return $query->whereStatus(static::STATUS_CLEARED);
     }
 
-    public function scopePending($query)
+    public function scopePending(Builder $query): Builder
     {
-        return $query->whereStatus(self::STATUS_PENDING);
+        return $query->whereStatus(static::STATUS_PENDING);
     }
 
-    public function scopeCredits($query)
+    public function scopeCredits(Builder $query): Builder
     {
         return $query->where('amount', '>=', 0);
     }
 
-    public function scopeDebits($query)
+    public function scopeDebits(Builder $query): Builder
     {
         return $query->where('amount', '<', 0);
     }
 
-    public function scopeFundsAvailable($query)
+    public function scopeFundsAvailable(Builder $query): Builder
     {
         return $query->cleared()->orWhere(function($query) {
             $query->pending()->debits();
         });
     }
 
-    public function clear()
+    public function clear(): self
     {
-        $this->status = self::STATUS_CLEARED;
+        $this->status = static::STATUS_CLEARED;
         $this->save();
+
+        return $this;
     }
 }

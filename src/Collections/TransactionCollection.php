@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 class TransactionCollection extends Collection
 {
-    public function updateRunningBalance()
+    public function updateRunningBalance(): self
     {
         $earliestTransaction = $this->sortBy('created_at')->sortBy('id')->first();
 

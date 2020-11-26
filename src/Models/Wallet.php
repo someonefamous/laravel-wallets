@@ -4,6 +4,9 @@ namespace SomeoneFamous\Wallets\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Facades\DB;
 use SomeoneFamous\FindBy\FindBy;
 use SomeoneFamous\Wallets\Database\Factories\WalletFactory;
@@ -30,12 +33,12 @@ class Wallet extends Model
 
     private $errors = [];
 
-    protected static function newFactory()
+    protected static function newFactory(): WalletFactory
     {
         return WalletFactory::new();
     }
 
-    public function transactions()
+    public function transactions(): HasMany
     {
         return $this->hasMany(Transaction::class);
     }
@@ -45,12 +48,12 @@ class Wallet extends Model
         return $this->hasMany(Transaction::class)->fundsAvailable();
     }
 
-    public function currency()
+    public function currency(): BelongsTo
     {
         return $this->belongsTo(Currency::class);
     }
 
-    public function owner()
+    public function owner(): MorphTo
     {
         return $this->morphTo();
     }

@@ -4,6 +4,7 @@ namespace SomeoneFamous\Wallets\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use SomeoneFamous\FindBy\FindBy;
 use SomeoneFamous\Wallets\Database\Factories\CurrencyFactory;
 
@@ -24,17 +25,17 @@ class Currency extends Model
 
     public $timestamps = false;
 
-    protected static function newFactory()
+    protected static function newFactory(): CurrencyFactory
     {
         return CurrencyFactory::new();
     }
 
-    public function wallets()
+    public function wallets(): HasMany
     {
         return $this->hasMany(Wallet::class);
     }
 
-    public function getSystemWalletAttribute()
+    public function getSystemWalletAttribute(): Wallet
     {
         return ($systemWallet = $this->wallets()->whereNull('owner_id')->first())
             ? $systemWallet
@@ -48,14 +49,14 @@ class Currency extends Model
 
     public function getMinimumAmountAttribute(): string
     {
-        return $this->decimals
+        return ($this->decimals > 0)
             ? '0.' . str_pad('', $this->decimals - 1, '0') . '1'
             : '0';
     }
 
     public function getMaximumAmountAttribute(): string
     {
-        $fraction_part = $this->decimals
+        $fraction_part = ($this->decimals > 0)
             ? '.' . str_pad('', $this->decimals, '9')
             : '';
 
