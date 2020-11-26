@@ -21,7 +21,7 @@ class Transaction extends Model
 
     public function newCollection(array $models = []): TransactionCollection
     {
-        return new TransactionCollection($models);
+        return (new TransactionCollection($models))->updateRunningBalance();
     }
 
     protected static function newFactory(): TransactionFactory

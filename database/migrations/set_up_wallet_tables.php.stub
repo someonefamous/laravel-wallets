@@ -3,7 +3,6 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
 use SomeoneFamous\Wallets\Models\Currency;
 use SomeoneFamous\Wallets\Models\Transaction;
 use SomeoneFamous\Wallets\Models\Wallet;
@@ -14,15 +13,15 @@ class SetUpWalletTables extends Migration
     {
         Schema::create('currencies', function (Blueprint $table) {
             $table->id();
-            $table->string('code', 3)->unique()->nullable();   // e.g. USD
-            $table->string('symbol', 1)->nullable();           // e.g. $
-            $table->string('name');                            // e.g. United States Dollar
+            $table->string('code', 3)->unique()->nullable();
+            $table->string('symbol', 1)->nullable();
+            $table->string('name');
             $table->unsignedTinyInteger('decimals')->default(2);
         });
 
         $currencies = [
             ['name' => 'Rewards Points', 'symbol' => '☆', 'decimals' => 0],
-            ['name' => 'US Dollar',  'symbol' => '$', 'code' => 'USD'],
+            ['name' => 'US Dollar', 'symbol' => '$', 'code' => 'USD'],
         ];
 
         if (!App::runningUnitTests()) {
