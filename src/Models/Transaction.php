@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Builder;
-use SomeoneFamous\FindBy\FindBy;
+use SomeoneFamous\FindBy\Traits\FindBy;
 use SomeoneFamous\Wallets\Collections\TransactionCollection;
 use SomeoneFamous\Wallets\Database\Factories\TransactionFactory;
 

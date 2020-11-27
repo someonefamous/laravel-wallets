@@ -5,7 +5,7 @@ namespace SomeoneFamous\Wallets\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use SomeoneFamous\FindBy\FindBy;
+use SomeoneFamous\FindBy\Traits\FindBy;
 use SomeoneFamous\Wallets\Database\Factories\CurrencyFactory;
 
 class Currency extends Model

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Facades\DB;
-use SomeoneFamous\FindBy\FindBy;
+use SomeoneFamous\FindBy\Traits\FindBy;
 use SomeoneFamous\Wallets\Database\Factories\WalletFactory;
 use SomeoneFamous\Wallets\Traits\HasWallets;
 
