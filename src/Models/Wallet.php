@@ -123,9 +123,8 @@ class Wallet extends Model
 
                 $receivingWallet = new self;
                 $receivingWallet->currency()->associate($this->currency);
-                $receivingWallet->owner_id = $recipient->id;
-                $receivingWallet->owner_type = get_class($recipient);
-                $receivingWallet->save();
+
+                $recipient->wallets()->save($receivingWallet);
             }
 
             $success = $this->spendToWallet($receivingWallet, $amount, $description);
