@@ -207,6 +207,9 @@ class Wallet extends Model
             $success = $this->is_system_wallet || ($this->available_balance + $this->overdraft >= 0);
 
         } catch (\Exception $exception) {
+
+            $this->errors[] = $exception->getMessage();
+            
             $success = false;
         }
 
