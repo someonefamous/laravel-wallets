@@ -188,16 +188,16 @@ class Wallet extends Model
         try {
 
             $this->transactions()->create([
-                'description' => $description,
-                'amount' => -$amount,
-                'status' => $status,
+                'description'       => $description,
+                'amount'            => -$amount,
+                'status'            => $status,
                 'counter_wallet_id' => $receivingWallet->id
             ]);
 
             $receivingWallet->transactions()->create([
-                'description' => $description,
-                'amount' => $amount,
-                'status' => $status,
+                'description'       => $description,
+                'amount'            => $amount,
+                'status'            => $status,
                 'counter_wallet_id' => $this->id
             ]);
 
