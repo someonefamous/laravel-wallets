@@ -209,7 +209,7 @@ class Wallet extends Model
         } catch (\Exception $exception) {
 
             $this->errors[] = $exception->getMessage();
-            
+
             $success = false;
         }
 
