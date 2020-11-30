@@ -183,24 +183,23 @@ class Wallet extends Model
             return false;
         }
 
-        $debit              = new Transaction;
-        $debit->description = $description;
-        $debit->amount      = -$amount;
-        $debit->status      = $status;
-        $debit->counterWallet()->associate($receivingWallet);
-
-        $credit              = new Transaction;
-        $credit->description = $description;
-        $credit->amount      = $amount;
-        $credit->status      = $status;
-        $credit->counterWallet()->associate($this);
-
         DB::beginTransaction();
 
         try {
 
-            $this->transactions()->save($debit);
-            $receivingWallet->transactions()->save($credit);
+            $this->transactions()->create([
+                'description' => $description,
+                'amount' => -$amount,
+                'status' => $status,
+                'counter_wallet_id' => $receivingWallet->id
+            ]);
+
+            $receivingWallet->transactions()->create([
+                'description' => $description,
+                'amount' => $amount,
+                'status' => $status,
+                'counter_wallet_id' => $this->id
+            ]);
 
             $success = $this->is_system_wallet || ($this->available_balance + $this->overdraft >= 0);
 

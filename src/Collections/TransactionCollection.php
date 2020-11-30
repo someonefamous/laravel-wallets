@@ -18,15 +18,19 @@ class TransactionCollection extends Collection
             ->where('created_at', '<=', $earliestTransaction->created_at)
             ->sum('amount');
 
-        $this->sortBy('created_at')
-            ->sortBy('id')
-            ->map(function($transaction) use (&$balance) {
+        $this->sort(function($a, $b) {
 
-                $balance += $transaction->amount;
-                $transaction->balance = $balance;
+            return ($a->created_at === $b->created_at)
+                ? $a->id <=> $b->id
+                : $a->created_at <=> $b->created_at;
 
-                return $transaction;
-            });
+        })->map(function($transaction) use (&$balance) {
+
+            $balance += $transaction->amount;
+            $transaction->balance = $balance;
+
+            return $transaction;
+        });
 
         return $this;
     }
