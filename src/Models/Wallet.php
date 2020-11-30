@@ -130,6 +130,9 @@ class Wallet extends Model
             $success = $this->spendToWallet($receivingWallet, $amount, $description);
 
         } catch (\Exception $exception) {
+
+            $this->errors[] = $exception->getMessage();
+
             $success = false;
         }
 
