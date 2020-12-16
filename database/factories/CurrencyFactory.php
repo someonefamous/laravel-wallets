@@ -2,8 +2,8 @@
 
 namespace SomeoneFamous\Wallets\Database\Factories;
 
-use SomeoneFamous\Wallets\Models\Currency;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use SomeoneFamous\Wallets\Models\Currency;
 
 class CurrencyFactory extends Factory
 {
