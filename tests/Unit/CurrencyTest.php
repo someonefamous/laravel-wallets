@@ -37,4 +37,12 @@ class CurrencyTest extends TestCase
         $currency = Currency::factory()->create(['decimals' => 3]);
         $this->assertEquals(3, $currency->decimals);
     }
+
+    /** @test */
+    function a_currency_has_a_system_wallet()
+    {
+        $currency = Currency::factory()->create(['decimals' => 3]);
+
+        $this->assertNotNull($currency->system_wallet);
+    }
 }
