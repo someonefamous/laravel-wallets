@@ -37,7 +37,7 @@ class Currency extends Model
 
     public function getSystemWalletAttribute(): Wallet
     {
-        return $this->wallets()->firstOrCreate(['owner_id' => null], []);
+        return $this->wallets()->firstOrCreate(['owner_id' => null]);
     }
 
     public function displayAmount($amount): string
