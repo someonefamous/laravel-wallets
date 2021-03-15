@@ -1545,16 +1545,16 @@
         },
         {
             "name": "someonefamous/laravel-findby",
-            "version": "2.2.4",
+            "version": "2.2.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/someonefamous/laravel-findby.git",
-                "reference": "8fb4fad2436c864755a2677c68af7ec4942c8460"
+                "reference": "06580aaa9a5b651418e334c43a18dab193917ceb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/someonefamous/laravel-findby/zipball/8fb4fad2436c864755a2677c68af7ec4942c8460",
-                "reference": "8fb4fad2436c864755a2677c68af7ec4942c8460",
+                "url": "https://api.github.com/repos/someonefamous/laravel-findby/zipball/06580aaa9a5b651418e334c43a18dab193917ceb",
+                "reference": "06580aaa9a5b651418e334c43a18dab193917ceb",
                 "shasum": ""
             },
             "require": {
@@ -1589,9 +1589,9 @@
             ],
             "support": {
                 "issues": "https://github.com/someonefamous/laravel-findby/issues",
-                "source": "https://github.com/someonefamous/laravel-findby/tree/2.2.4"
+                "source": "https://github.com/someonefamous/laravel-findby/tree/2.2.5"
             },
-            "time": "2021-01-20T03:54:47+00:00"
+            "time": "2021-03-15T00:19:14+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
