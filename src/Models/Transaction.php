@@ -19,6 +19,14 @@ class Transaction extends Model
     const STATUS_PENDING = 0;
     const STATUS_CLEARED = 1;
 
+    protected $fillable = [
+        'amount',
+        'counter_wallet_id',
+        'description',
+        'status',
+        'wallet_id',
+    ];
+
     public function newCollection(array $models = []): TransactionCollection
     {
         return (new TransactionCollection($models))->updateRunningBalance();
